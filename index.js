@@ -24,10 +24,12 @@ const toggleMode = (mode) =>{
     } else if(mode === modes.drawing){
         if (currentMode === modes.drawing){
             currentMode = ""
+            canvas.isDrawingMode = false
+            canvas.renderAll()
         } else{
             currentMode = modes.drawing
         }
-        console.log(mode)
+        
 
     }
 
@@ -38,13 +40,13 @@ const toggleMode = (mode) =>{
 const setPanEvents = (canvas) =>{
     canvas.on("mouse:over",(event)=>{
         if (mousePressed && currentMode === modes.pan){
-            canvas.setCursor("grab")
+            canvas.setCursor("crosshair")
             canvas.renderAll()
             const mEvent = event.e;
             const delta = new fabric.Point(mEvent.movementX,mEvent.movementY)
             canvas.relativePan(delta)
         }else if(mousePressed && currentMode === modes.drawing){
-            canvas.isDrawing = true
+            canvas.isDrawingMode = true
             canvas.renderAll()
         }
     })
@@ -52,7 +54,7 @@ const setPanEvents = (canvas) =>{
     canvas.on("mouse:down",(event)=>{
         mousePressed = true;
         if (currentMode === modes.pan){
-            canvas.setCursor("grab")
+            canvas.setCursor("crosshair")
             canvas.renderAll()
         }
     })
