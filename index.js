@@ -1,11 +1,34 @@
 
 const initiCanvas = (id)=>{
     return new fabric.Canvas(id,{
-        width:500,
-        height:500,
+        width:720,
+        height:540,
         Selection: false,
     });
 }
+
+const loadImage = () => {
+    const url = document.getElementById('imageUrl').value;
+    fabric.Image.fromURL(url, (img) => {
+        // Calculate the scale to fit the image to the canvas size
+        let scale = Math.min(
+            canvas.width / img.width, 
+            canvas.height / img.height
+        );
+
+        img.set({
+            scaleX: scale,
+            scaleY: scale,
+            top: 0,
+            left: 0
+        });
+
+        canvas.centerObject(img);
+        canvas.add(img);
+        canvas.renderAll();
+    });
+}
+
 
 const setBackground = (url,canvas)=> {
     fabric.Image.fromURL(url,(img)=> {
@@ -26,7 +49,7 @@ const toggleMode = (mode) =>{
     } else if(mode === modes.drawing){
         if (currentMode === modes.drawing){
             currentMode = ""
-            canvas.isDrawingMode = false
+            canvas.isDrawingMode = true
             canvas.renderAll()
         } else{
             currentMode = modes.drawing
@@ -40,9 +63,9 @@ const toggleMode = (mode) =>{
 
  
 const setPanEvents = (canvas) =>{
-    canvas.on("mouse:over",(event) => {
+    canvas.on("mouse:move",(event) => {
         if (mousePressed && currentMode === modes.pan){
-            canvas.setCursor("crosshair")
+            canvas.setCursor("grab")
             canvas.renderAll()
             const mEvent = event.e;
             const delta = new fabric.Point(mEvent.movementX,mEvent.movementY)
@@ -56,7 +79,7 @@ const setPanEvents = (canvas) =>{
     canvas.on("mouse:down",(event)=>{
         mousePressed = true;
         if (currentMode === modes.pan){
-            canvas.setCursor("crosshair")
+            canvas.setCursor("grab")
             canvas.renderAll()
         }
     })
@@ -78,7 +101,7 @@ const modes={
     drawing:"drawing"
 }
 
-setBackground("https://th.bing.com/th/id/OIP.Z_PIeIRDajXPmZHROt-T_QHaEK?rs=1&pid=ImgDetMain",canvas);
+setBackground("https://th.bing.com/th/id/OIP.rfbVhRZn0nAG4BnfDGastAHaFj?w=720&h=540&rs=1&pid=ImgDetMain",canvas);
 
 setPanEvents(canvas);
 
