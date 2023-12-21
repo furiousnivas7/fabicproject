@@ -20,6 +20,8 @@ const toggleMode = (mode) =>{
             currentMode = ""
         } else{
             currentMode = modes.pan
+            canvas.isDrawingMode = false
+            canvas.renderAll()
         }
     } else if(mode === modes.drawing){
         if (currentMode === modes.drawing){
@@ -33,12 +35,12 @@ const toggleMode = (mode) =>{
 
     }
 
-    }
+}
    
 
  
 const setPanEvents = (canvas) =>{
-    canvas.on("mouse:over",(event)=>{
+    canvas.on("mouse:over",(event) => {
         if (mousePressed && currentMode === modes.pan){
             canvas.setCursor("crosshair")
             canvas.renderAll()
