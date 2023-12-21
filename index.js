@@ -14,14 +14,27 @@ const setBackground = (url,canvas)=> {
     })
 }
 
+const togglePan = () =>{
+    if (currentMode === modes.pan){
+        currentMode = ""
+    } else{
+        currentMode = modes.pan
+    }
+}
+
 const canvas = initiCanvas("canvas");
 let mousePressed = false;
+
+let currentMode;
+const modes={
+    pan:"pan"
+}
 
 setBackground("https://th.bing.com/th/id/OIP.Z_PIeIRDajXPmZHROt-T_QHaEK?rs=1&pid=ImgDetMain",canvas);
 
 
 canvas.on("mouse:over",(event)=>{
-    if (mousePressed){
+    if (mousePressed && currentMode === modes.pan){
         canvas.setCursor("grab")
         canvas.renderAll()
         const mEvent = event.e;
@@ -32,8 +45,10 @@ canvas.on("mouse:over",(event)=>{
 
 canvas.on("mouse:down",(event)=>{
     mousePressed = true;
-    canvas.setCursor("grab")
-    canvas.renderAll()
+    if (currentMode === modes.pan){
+        canvas.setCursor("grab")
+        canvas.renderAll()
+    }
 })
 
 canvas.on("mouse:up",(event)=>{
