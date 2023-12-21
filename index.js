@@ -8,4 +8,4 @@ const canvas =new fabric.Canvas("canvas",{
 });
  
 
-canvas.rederAll();
+canvas.renderAll();
