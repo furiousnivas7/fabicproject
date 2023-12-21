@@ -14,12 +14,23 @@ const setBackground = (url,canvas)=> {
 }
 
 const canvas = initiCanvas("canvas");
+let mousePressed = false;
 
 setBackground("https://th.bing.com/th/id/OIP.Z_PIeIRDajXPmZHROt-T_QHaEK?rs=1&pid=ImgDetMain",canvas);
 
 
 canvas.on("mouse:over",(event)=>{
-    const mEvent = event.e;
-    const delta = new fabric.Point(mEvent.movementX,mEvent.movementY)
-    canvas.relativePan(delta)
+    if (mousePressed){
+        const mEvent = event.e;
+        const delta = new fabric.Point(mEvent.movementX,mEvent.movementY)
+        canvas.relativePan(delta)
+    }
+})
+
+canvas.on("mouse:down",(event)=>{
+    mousePressed = true;
+})
+
+canvas.on("mouse:up",(event)=>{
+    mousePressed = false
 })
