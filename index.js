@@ -10,7 +10,7 @@ const canvas =new fabric.Canvas("canvas",{
 
 canvas.renderAll();
 
-fabric.Image.fromURL("1.png",(img)=>{
+fabric.Image.fromURL("https://th.bing.com/th/id/OIP.Z_PIeIRDajXPmZHROt-T_QHaEK?rs=1&pid=ImgDetMain",(img)=>{
     canvas.backgroundImage= img
     canvas.renderAll()
 });
