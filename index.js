@@ -55,6 +55,7 @@ let mousePressed = false;
 let currentMode;
 const modes={
     pan:"pan"
+    drawing:"drawing"
 }
 
 setBackground("https://th.bing.com/th/id/OIP.Z_PIeIRDajXPmZHROt-T_QHaEK?rs=1&pid=ImgDetMain",canvas);
