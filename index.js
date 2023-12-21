@@ -3,6 +3,7 @@ const initiCanvas = (id)=>{
     return new fabric.Canvas(id,{
         width:500,
         height:500,
+        Selection: false,
     });
 }
 
@@ -29,8 +30,12 @@ canvas.on("mouse:over",(event)=>{
 
 canvas.on("mouse:down",(event)=>{
     mousePressed = true;
+    canvas.setCursor("crosshair")
+    canvas.renderAll()
 })
 
 canvas.on("mouse:up",(event)=>{
     mousePressed = false
+    canvas.setCursor("default")
+    canvas.renderAll()
 })
