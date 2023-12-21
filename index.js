@@ -32,3 +32,8 @@ const setBackground = (url,canvas)=> {
 const canvas = initiCanvas("canvas");
 
 setBackground("https://th.bing.com/th/id/OIP.Z_PIeIRDajXPmZHROt-T_QHaEK?rs=1&pid=ImgDetMain",canvas);
+
+
+canvas.on("mouse:over",(e)=>{
+    console.log(e)
+})
