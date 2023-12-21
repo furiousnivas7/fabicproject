@@ -14,13 +14,26 @@ const setBackground = (url,canvas)=> {
     })
 }
 
-const togglePan = () =>{
-    if (currentMode === modes.pan){
-        currentMode = ""
-    } else{
-        currentMode = modes.pan
+const toggleMode = (mode) =>{
+    if (mode === modes.pan){
+        if (currentMode === modes.pan){
+            currentMode = ""
+        } else{
+            currentMode = modes.pan
+        }
+    } else if(mode === modes.drawing){
+        if (currentMode === modes.drawing){
+            currentMode = ""
+        } else{
+            currentMode = modes.drawing
+        }
+        console.log(mode)
+
     }
-}
+
+    }
+   
+
  
 const setPanEvents = (canvas) =>{
     canvas.on("mouse:over",(event)=>{
