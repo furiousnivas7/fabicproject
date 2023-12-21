@@ -22,6 +22,8 @@ setBackground("https://th.bing.com/th/id/OIP.Z_PIeIRDajXPmZHROt-T_QHaEK?rs=1&pid
 
 canvas.on("mouse:over",(event)=>{
     if (mousePressed){
+        canvas.setCursor("grab")
+        canvas.renderAll()
         const mEvent = event.e;
         const delta = new fabric.Point(mEvent.movementX,mEvent.movementY)
         canvas.relativePan(delta)
@@ -30,7 +32,7 @@ canvas.on("mouse:over",(event)=>{
 
 canvas.on("mouse:down",(event)=>{
     mousePressed = true;
-    canvas.setCursor("crosshair")
+    canvas.setCursor("grab")
     canvas.renderAll()
 })
 
