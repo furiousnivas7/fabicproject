@@ -67,7 +67,7 @@ let mousePressed = false;
 
 let currentMode;
 const modes={
-    pan:"pan"
+    pan:"pan",
     drawing:"drawing"
 }
 
