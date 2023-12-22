@@ -52,6 +52,8 @@ const toggleMode = (mode) =>{
             canvas.isDrawingMode = true
             canvas.renderAll()
         } else{
+            canvas.freeDrawingBrush.color = "red"
+            canvas.freeDrawingBrush.width = 15
             currentMode = modes.drawing
             canvas.isDrawingMode = true
             canvas.renderAll()
