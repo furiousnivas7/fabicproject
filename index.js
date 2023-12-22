@@ -52,10 +52,9 @@ const toggleMode = (mode) =>{
             canvas.isDrawingMode = true
             canvas.renderAll()
         } else{
-           
             currentMode = modes.drawing
-            canvas.FreeDrawingBrush.color = color
             canvas.isDrawingMode = true
+            canvas.freeDrawingBrush.color = color
             canvas.renderAll()
         }
         
@@ -95,12 +94,20 @@ const setPanEvents = (canvas) =>{
  
 const setColorListener = ()=> {
     const picker =document.getElementById("colorPicker" )
-    picker addEventListener("change",(event) =>{
-        console.log(event.target.value)
-        color = "#" + event.target.value
-        canvas.FreeDrawingBrush.color = color
+    picker.addEventListener("change",(event) =>{
+        // console.log(event.target.value)
+        color = '#' + event.target.value
+        canvas.freeDrawingBrush.color = color
         canvas.renderAll()
     } )
+}
+
+const clearCanvas = (canvas) => {
+    canvas.getObjects().forEach((o)=> {
+        if(o !== canvas.backgroundImage){
+            canvas.remove(o)
+        }
+    })
 }
 
 const canvas = initiCanvas("canvas");
@@ -117,4 +124,4 @@ setBackground("https://th.bing.com/th/id/OIP.rfbVhRZn0nAG4BnfDGastAHaFj?w=720&h=
 
 setPanEvents(canvas);
 
-setColorListener()
+setColorListener(canvas)
