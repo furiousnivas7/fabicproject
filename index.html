@@ -6,12 +6,17 @@
     <title>Document</title>
 </head>
 <body>
+    
     <input type="text" id="imageUrl" placeholder="Paste image URL here">
     <button onclick="loadImage()">Load Image</button>
     <button onclick="toggleMode(modes.pan)">Toggle Pan</button>
     <button onclick="toggleMode(modes.drawing)">Toggle Drawing</button>
+    <input id="colorPicker"  value="#000000" data-jscolor="{}">
     <canvas id="canvas"></canvas>
 
+    
+    <script src="lib/jscolor.js"></script>
+    <script src="lib/fabric.min.js"></script>
     <script src="/lib/fabric.min.js"></script>
     <script src="index.js"></script>
 </body>

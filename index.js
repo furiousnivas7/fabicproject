@@ -52,10 +52,9 @@ const toggleMode = (mode) =>{
             canvas.isDrawingMode = true
             canvas.renderAll()
         } else{
-            canvas.freeDrawingBrush = new fabric.SprayBrush(canvas)
-            canvas.freeDrawingBrush.color = "red"
-            canvas.freeDrawingBrush.width = 15
+           
             currentMode = modes.drawing
+            canvas.FreeDrawingBrush.color = color
             canvas.isDrawingMode = true
             canvas.renderAll()
         }
@@ -93,9 +92,20 @@ const setPanEvents = (canvas) =>{
     })
 
 }
+ 
+const setColorListener = ()=> {
+    const picker =document.getElementById("colorPicker" )
+    picker addEventListener("change",(event) =>{
+        console.log(event.target.value)
+        color = "#" + event.target.value
+        canvas.FreeDrawingBrush.color = color
+        canvas.renderAll()
+    } )
+}
 
 const canvas = initiCanvas("canvas");
-let mousePressed = false;
+let mousePressed = false
+let color = "#000000"
 
 let currentMode;
 const modes={
@@ -107,3 +117,4 @@ setBackground("https://th.bing.com/th/id/OIP.rfbVhRZn0nAG4BnfDGastAHaFj?w=720&h=
 
 setPanEvents(canvas);
 
+setColorListener()
