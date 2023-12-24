@@ -110,11 +110,11 @@ const clearCanvas = (canvas) => {
     })
 }
 
-const creatRect = (canvas)=>{
+const createRect = (canvas)=>{
     console.log(Rect)
 }
 
-const creatCirc = (canvas)=>{
+const createCirc = (canvas)=>{
     console.log(Rect)
 }
 
