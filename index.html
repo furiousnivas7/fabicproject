@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
+    <link rel="stylesheet" href="index.css">
+</head> 
 <body>
     
     <input type="text" id="imageUrl" placeholder="Paste image URL here">
@@ -15,10 +16,13 @@
     <button onclick="clearCanvas(canvas)">clear</button>
     <canvas id="canvas"></canvas>
 
-    <div>
+    <div id="objectButtonsWrapper">
         <p id="objectsTitle">Object</p>
-        <button>Rect</button>
-        <button>Circ</button>
+        <div id="objectsButtons">
+            <button>Rect</button>
+            <button>Circ</button>
+        </div>
+        
     </div>
 
     
