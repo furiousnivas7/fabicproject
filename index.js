@@ -111,11 +111,36 @@ const clearCanvas = (canvas) => {
 }
 
 const createRect = (canvas)=>{
-    console.log(Rect)
+    console.log("Rect")
+    const canvaCenter = canvas.getCenter()
+    const rect = new fabric.Rect({
+        width: 100,
+        height:100,
+        fill:"green",
+        left:canvaCenter.left,
+        top:canvaCenter.top,
+        OriginX:"center",
+        OriginY:"center",
+        conerColor:"white"
+    })
+    canvas.add(rect)
+    canvas.renderAll()
 }
 
 const createCirc = (canvas)=>{
-    console.log(Rect)
+    console.log("Circ")
+    const canvaCenter = canvas.getCenter()
+    const circle = new fabric.Circle({
+        radius:50,
+        fill:"red",
+        left:canvaCenter.left,
+        top:canvaCenter.top,
+        OriginX:"center",
+        OriginY:"center",
+        conerColor:"white"
+    })
+    canvas.add(circle)
+    canvas.renderAll()
 }
 
 const canvas = initiCanvas("canvas");
