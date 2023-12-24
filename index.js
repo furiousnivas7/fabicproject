@@ -110,6 +110,14 @@ const clearCanvas = (canvas) => {
     })
 }
 
+const creatRect = (canvas)=>{
+    console.log(Rect)
+}
+
+const creatCirc = (canvas)=>{
+    console.log(Rect)
+}
+
 const canvas = initiCanvas("canvas");
 let mousePressed = false
 let color = "#000000"
