@@ -96,18 +96,31 @@ const setColorListener = ()=> {
     const picker =document.getElementById("colorPicker" )
     picker.addEventListener("change",(event) =>{
         // console.log(event.target.value)
-        color = '#' + event.target.value
+        color =  event.target.value
         canvas.freeDrawingBrush.color = color
         canvas.renderAll()
     } )
 }
 
-const clearCanvas = (canvas) => {
+const clearCanvas = (canvas,state) => {
+    state.val = canvas.toSVG()
     canvas.getObjects().forEach((o)=> {
         if(o !== canvas.backgroundImage){
             canvas.remove(o)
         }
     })
+}
+
+const restoreCanvas = (canvas,state,bgurl) =>{
+    if(state.val){
+        fabric.loadSVGFromString(state.val,objects =>{
+            console.log(objects)
+            objects=objects.filter(o=>o['xlink:href'] !== bgurl)
+            canvas.add(...objects)
+            canvas.requestRenderAll()
+        })
+    }
+
 }
 
 const createRect = (canvas)=>{
@@ -118,13 +131,25 @@ const createRect = (canvas)=>{
         height:100,
         fill:"green",
         left:canvaCenter.left,
-        top:canvaCenter.top,
+        top:-50,
         OriginX:"center",
         OriginY:"center",
-        conerColor:"white"
+        conerColor:"black",
+        objectCaching:false
     })
     canvas.add(rect)
     canvas.renderAll()
+    rect.animate("top",canvaCenter.top,{
+        onChange:canvas.renderAll.bind(canvas)
+    })
+    rect.on("selected",()=>{
+        rect.set("fill","white")
+        canvas.renderAll()
+    })
+    rect.on("deselected",()=>{
+        rect.set("fill","green")
+        canvas.renderAll()
+    })
 }
 
 const createCirc = (canvas)=>{
@@ -134,18 +159,59 @@ const createCirc = (canvas)=>{
         radius:50,
         fill:"red",
         left:canvaCenter.left,
-        top:canvaCenter.top,
+        top:-50,
         OriginX:"center",
         OriginY:"center",
-        conerColor:"white"
+        conerColor:"black",
+        objectCaching:false
     })
     canvas.add(circle)
     canvas.renderAll()
+    circle.animate("top",canvas.height-50,{
+        onChange:canvas.renderAll.bind(canvas),
+        onComplete:() =>{
+            circle.animate("top",canvaCenter.top,{
+                onChange:canvas.renderAll.bind(canvas),
+                easing:fabric.util.ease.easeOutBounce,
+                    duration:250
+            })
+        }
+    })
+    circle.on("selected",()=>{
+        circle.set("fill","white")
+        canvas.requestRenderAll()
+    })
+    circle.on("deselected",()=>{
+        circle.set("fill","red")
+        canvas.requestRenderAll()
+    })
 }
 
+const groupObjects = (canvas,group,shouldGroup) => {
+    if(shouldGroup){
+        const objects = canvas.getObjects()
+        group.val = new fabric.Group(objects,{conerColor:"white"})
+        clearCanvas(canvas)
+        canvas.add(group.val)
+        canvas.requestRenderAll()
+    }else{
+        group.val.destroy()
+        const oldGroup = group.val.getObjects()
+        canvas.remove(group.val)
+        canvas.add(...oldGroup)
+        group.val=null
+        canvas.requestRenderAll()
+    }
+
+}
+
+
 const canvas = initiCanvas("canvas");
+const svgState={}
 let mousePressed = false
 let color = "#000000"
+const group = {}
+const bgurl="https://th.bing.com/th/id/OIP.rfbVhRZn0nAG4BnfDGastAHaFj?w=720&h=540&rs=1&pid=ImgDetMain"
 
 let currentMode;
 const modes={
@@ -153,7 +219,7 @@ const modes={
     drawing:"drawing"
 }
 
-setBackground("https://th.bing.com/th/id/OIP.rfbVhRZn0nAG4BnfDGastAHaFj?w=720&h=540&rs=1&pid=ImgDetMain",canvas);
+setBackground(bgurl,canvas);
 
 setPanEvents(canvas);
 

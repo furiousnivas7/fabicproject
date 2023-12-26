@@ -12,8 +12,9 @@
     <button onclick="loadImage()">Load Image</button>
     <button onclick="toggleMode(modes.pan)">Toggle Pan</button>
     <button onclick="toggleMode(modes.drawing)">Toggle Drawing</button>
-    <input id="colorPicker"  value="#000000" data-jscolor="{}">
-    <button onclick="clearCanvas(canvas)">clear</button>
+    <input id="colorPicker"  value="#000000" data-jscolor="{}" onclick="setColorListener">
+    <button onclick="clearCanvas(canvas,svgState)">clear</button>
+    <button onclick="restoreCanvas(canvas,svgState,bgurl)">Restore</button>
     <canvas id="canvas"></canvas>
 
     <div id="objectButtonsWrapper">
@@ -21,8 +22,10 @@
         <div id="objectsButtons">
             <button onclick="createRect(canvas)">Rect</button>
             <button onclick="createCirc(canvas)">Circ</button>
-           
+            
         </div>
+        <button onclick="groupObjects(canvas,group,true)">group</button>
+            <button onclick="groupObjects(canvas,group,false)"> ungroup </button>
         
     </div>
 
