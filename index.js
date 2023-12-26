@@ -117,7 +117,7 @@ const restoreCanvas = (canvas,state,bgurl) =>{
             console.log(objects)
             objects=objects.filter(o=>o['xlink:href'] !== bgurl)
             canvas.add(...objects)
-            canvas.requestRenderAll()
+            canvas.renderAll()
         })
     }
 
