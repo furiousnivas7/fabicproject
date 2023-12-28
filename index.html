@@ -16,24 +16,24 @@
     <button onclick="clearCanvas(canvas,svgState)">clear</button>
     <button onclick="restoreCanvas(canvas,svgState,bgurl)">Restore</button>
     <canvas id="canvas"></canvas>
-
-    <div id="objectButtonsWrapper">
-        <p id="objectsTitle">Object</p>
-        <div id="objectsButtons">
-            <button onclick="createRect(canvas)">Rect</button>
-            <button onclick="createCirc(canvas)">Circ</button>
+    <div id="buttomButtons">
+        <div class="buttonsWrapper">
+            <p class="buttonsTitle">Object</p>
+            <div class="buttons">
+                <button onclick="createRect(canvas)">Rect</button>
+                <button onclick="createCirc(canvas)">Circ</button>
+                
+            </div>
+            <button onclick="groupObjects(canvas,group,true)">group</button>
+                <button onclick="groupObjects(canvas,group,false)"> ungroup </button>
             
         </div>
-        <button onclick="groupObjects(canvas,group,true)">group</button>
-            <button onclick="groupObjects(canvas,group,false)"> ungroup </button>
-        
+        <div class="buttonsWrapper">
+            <p id="buttonsTitle">Image
+                <input id="myImg" type="file" accept="image/*">
+            </p>
+        </div>
     </div>
-    <div id="objectButtonsWrapper">
-        <p id="objectsTitle">
-            <input id="myImg" type="file" accept="image/*">
-        </p>
-    </div>
-    
     <script src="lib/jscolor.js"></script>
     <script src="lib/jscolor.min.js"></script>
     <script src="/lib/fabric.min.js"></script>

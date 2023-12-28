@@ -103,7 +103,7 @@ const setColorListener = ()=> {
 }
 
 const clearCanvas = (canvas,state) => {
-    state.val = canvas.toSVG()
+    state.val = canvas.toJSON()
     canvas.getObjects().forEach((o)=> {
         if(o !== canvas.backgroundImage){
             canvas.remove(o)
@@ -111,13 +111,16 @@ const clearCanvas = (canvas,state) => {
     })
 }
 
-const restoreCanvas = (canvas,state,bgurl) =>{
+const restoreCanvas=(canvas,state,bgurl) =>{
     if(state.val){
-        fabric.loadSVGFromString(state.val,objects =>{
+        canvas.loadFromJSON(state.val,objects =>{
+            console.log("restore")
+            // objects = objects.filter(o=>o['xlink:href'] !== bgurl)
             console.log(objects)
-            objects=objects.filter(o=>o['xlink:href'] !== bgurl)
-            canvas.add(...objects)
-            canvas.requestRenderAll()
+            console.log(state)
+            // canvas.clear()
+            // canvas.add(...objects)
+            canvas.renderAll()
         })
     }
 
@@ -189,22 +192,30 @@ const createCirc = (canvas)=>{
 
 const groupObjects = (canvas,group,shouldGroup) => {
     if(shouldGroup){
-        const objects = canvas.getObjects()
-        group.val = new fabric.Group(objects,{conerColor:"white"})
-        clearCanvas(canvas)
-        canvas.add(group.val)
-        canvas.requestRenderAll()
+        const objects = canvas.getObjects();
+        if (objects.length > 0) {
+            group.val = new fabric.Group(objects,{conerColor:"white"});
+            // canvas.clear(canvas);
+            canvas.add(group.val);
+            canvas.requestRenderAll();
+        }
     }else{
-        group.val.destroy()
-        const oldGroup = group.val.getObjects()
-        canvas.remove(group.val)
-        canvas.add(...oldGroup)
-        group.val=null
-        canvas.requestRenderAll()
+        if (group.val) {
+            const oldGroup = group.val.getObjects();
+            canvas.remove(group.val);
+            group.val=null;
+            canvas.add(...oldGroup);
+            canvas.requestRenderAll();
+        }
     }
 
 }
-
+const imgAdded = (e)=>{
+    console.log(e)
+    const inputElem = document.getElementById("myImg")
+    const file = inputElem.files[0];
+    reader.readAsDataURL(file)
+}
 
 const canvas = initiCanvas("canvas");
 const svgState={}
@@ -218,9 +229,19 @@ const modes={
     pan:"pan",
     drawing:"drawing"
 }
-
+const reader = new FileReader()
 setBackground(bgurl,canvas);
 
 setPanEvents(canvas);
 
 setColorListener(canvas)
+const inputfile = document.getElementById("myImg");
+inputfile.addEventListener ("change",imgAdded)
+ 
+
+reader.addEventListener("load",() =>{
+    fabric.Image.fromURL(reader.result,img=>{
+        canvas.add(img)
+        canvas.requestRenderAll()
+    })
+})
