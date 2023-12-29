@@ -239,8 +239,12 @@ function saveCanvasState() {
 }
 function undoCanvasAction() {
     if (currentHistoryIndex === 0 || canvasHistory[currentHistoryIndex-1] === bgurl) return;
-    console.log("undo")
     currentHistoryIndex--;
+    if (canvasHistory[currentHistoryIndex]===bgurl){
+         console.log("bgurl")
+         return;
+        } 
+        console.log("undo")
     canvas.loadFromJSON(canvasHistory[currentHistoryIndex], () => {
         canvas.renderAll();
         // Handle any necessary callbacks after undo
