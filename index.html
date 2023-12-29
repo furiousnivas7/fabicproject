@@ -13,8 +13,13 @@
     <button onclick="toggleMode(modes.pan)">Toggle Pan</button>
     <button onclick="toggleMode(modes.drawing)">Toggle Drawing</button>
     <input id="colorPicker"  value="#000000" data-jscolor="{}" onclick="setColorListener">
-    <button onclick="clearCanvas(canvas,svgState)">clear</button>
+    
+    <div>
+        <button onclick="clearCanvas(canvas,svgState)">clear</button>
     <button onclick="restoreCanvas(canvas,svgState,bgurl)">Restore</button>
+        <button onclick="undoCanvasAction()">undo</button>
+        <button onclick="redoCanvasAction()">redo</button>
+    </div>
     <canvas id="canvas"></canvas>
     <div id="buttomButtons">
         <div class="buttonsWrapper">
@@ -26,13 +31,15 @@
             </div>
             <button onclick="groupObjects(canvas,group,true)">group</button>
                 <button onclick="groupObjects(canvas,group,false)"> ungroup </button>
-            
+                
         </div>
+        
         <div class="buttonsWrapper">
             <p id="buttonsTitle">Image
                 <input id="myImg" type="file" accept="image/*">
             </p>
         </div>
+       
     </div>
     <script src="lib/jscolor.js"></script>
     <script src="lib/jscolor.min.js"></script>

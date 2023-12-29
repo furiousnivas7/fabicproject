@@ -27,6 +27,7 @@ const loadImage = () => {
         canvas.add(img);
         canvas.renderAll();
     });
+    saveCanvasState()
 }
 
 
@@ -35,6 +36,8 @@ const setBackground = (url,canvas)=> {
         canvas.backgroundImage = img
         canvas.renderAll()
     })
+    saveCanvasState()
+    
 }
 
 const toggleMode = (mode) =>{
@@ -46,6 +49,7 @@ const toggleMode = (mode) =>{
             canvas.isDrawingMode = false
             canvas.renderAll()
         }
+        saveCanvasState()
     } else if(mode === modes.drawing){
         if (currentMode === modes.drawing){
             currentMode = ""
@@ -58,8 +62,9 @@ const toggleMode = (mode) =>{
             canvas.renderAll()
         }
         
-
+        saveCanvasState()
     }
+    
 
 }
    
@@ -75,6 +80,7 @@ const setPanEvents = (canvas) =>{
             canvas.relativePan(delta)
         }
     })
+    saveCanvasState()
     
     canvas.on("mouse:down",(event)=>{
         mousePressed = true;
@@ -83,13 +89,14 @@ const setPanEvents = (canvas) =>{
             canvas.renderAll()
         }
     })
+    saveCanvasState()
     
     canvas.on("mouse:up",(event)=>{
         mousePressed = false
         canvas.setCursor("default")
         canvas.renderAll()
     })
-
+    saveCanvasState()
 }
  
 const setColorListener = ()=> {
@@ -100,6 +107,7 @@ const setColorListener = ()=> {
         canvas.freeDrawingBrush.color = color
         canvas.renderAll()
     } )
+    saveCanvasState()
 }
 
 const clearCanvas = (canvas,state) => {
@@ -109,6 +117,7 @@ const clearCanvas = (canvas,state) => {
             canvas.remove(o)
         }
     })
+    saveCanvasState()
 }
 
 const restoreCanvas=(canvas,state,bgurl) =>{
@@ -121,8 +130,10 @@ const restoreCanvas=(canvas,state,bgurl) =>{
             // canvas.clear()
             // canvas.add(...objects)
             canvas.renderAll()
+            console.log(JSON.stringify(canvas))
         })
     }
+    saveCanvasState()
 
 }
 
@@ -132,19 +143,21 @@ const createRect = (canvas)=>{
     const rect = new fabric.Rect({
         width: 100,
         height:100,
-        fill:"green",
+        fill:color,
         left:canvaCenter.left,
         top:-50,
         OriginX:"center",
         OriginY:"center",
-        conerColor:"black",
+        conerColor:color,
         objectCaching:false
     })
+
     canvas.add(rect)
     canvas.renderAll()
     rect.animate("top",canvaCenter.top,{
         onChange:canvas.renderAll.bind(canvas)
     })
+    saveCanvasState()
     rect.on("selected",()=>{
         rect.set("fill","white")
         canvas.renderAll()
@@ -153,6 +166,7 @@ const createRect = (canvas)=>{
         rect.set("fill","green")
         canvas.renderAll()
     })
+    saveCanvasState()
 }
 
 const createCirc = (canvas)=>{
@@ -160,12 +174,12 @@ const createCirc = (canvas)=>{
     const canvaCenter = canvas.getCenter()
     const circle = new fabric.Circle({
         radius:50,
-        fill:"red",
+        fill:color,
         left:canvaCenter.left,
         top:-50,
         OriginX:"center",
         OriginY:"center",
-        conerColor:"black",
+        conerColor:color,
         objectCaching:false
     })
     canvas.add(circle)
@@ -180,6 +194,7 @@ const createCirc = (canvas)=>{
             })
         }
     })
+    saveCanvasState()
     circle.on("selected",()=>{
         circle.set("fill","white")
         canvas.requestRenderAll()
@@ -188,6 +203,7 @@ const createCirc = (canvas)=>{
         circle.set("fill","red")
         canvas.requestRenderAll()
     })
+    saveCanvasState()
 }
 
 const groupObjects = (canvas,group,shouldGroup) => {
@@ -198,7 +214,7 @@ const groupObjects = (canvas,group,shouldGroup) => {
             // canvas.clear(canvas);
             canvas.add(group.val);
             canvas.requestRenderAll();
-        }
+        }saveCanvasState()
     }else{
         if (group.val) {
             const oldGroup = group.val.getObjects();
@@ -208,13 +224,51 @@ const groupObjects = (canvas,group,shouldGroup) => {
             canvas.requestRenderAll();
         }
     }
+    saveCanvasState()
 
 }
+function saveCanvasState() {
+    // Remove future states if any
+    if (currentHistoryIndex < canvasHistory.length - 1) {
+        canvasHistory = canvasHistory.slice(0, currentHistoryIndex + 1);
+    }
+    // Save the current state
+    canvasHistory.push(JSON.stringify(canvas));
+    console.log(JSON.stringify(canvas))
+    currentHistoryIndex++;
+}
+function undoCanvasAction() {
+    if (currentHistoryIndex === 0 || canvasHistory[currentHistoryIndex-1] === bgurl) return;
+    console.log("undo")
+    currentHistoryIndex--;
+    canvas.loadFromJSON(canvasHistory[currentHistoryIndex], () => {
+        canvas.renderAll();
+        // Handle any necessary callbacks after undo
+
+    });
+    // saveCanvasState()
+}
+
+function redoCanvasAction() {
+    if (currentHistoryIndex >= canvasHistory.length - 1) return;
+    console.log("redo")
+    currentHistoryIndex++;
+    canvas.loadFromJSON(canvasHistory[currentHistoryIndex], () => {
+        canvas.renderAll();
+        // Handle any necessary callbacks after redo
+    });
+    // saveCanvasState()
+}
+
+
+
+
 const imgAdded = (e)=>{
     console.log(e)
     const inputElem = document.getElementById("myImg")
     const file = inputElem.files[0];
     reader.readAsDataURL(file)
+    saveCanvasState()
 }
 
 const canvas = initiCanvas("canvas");
@@ -223,6 +277,8 @@ let mousePressed = false
 let color = "#000000"
 const group = {}
 const bgurl="https://th.bing.com/th/id/OIP.rfbVhRZn0nAG4BnfDGastAHaFj?w=720&h=540&rs=1&pid=ImgDetMain"
+let canvasHistory = [];
+let currentHistoryIndex = -1;
 
 let currentMode;
 const modes={
@@ -245,3 +301,6 @@ reader.addEventListener("load",() =>{
         canvas.requestRenderAll()
     })
 })
+canvas.on('object:modified', function() {
+    saveCanvasState();
+});
