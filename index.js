@@ -238,7 +238,9 @@ function saveCanvasState() {
     currentHistoryIndex++;
 }
 function undoCanvasAction() {
-    if (currentHistoryIndex === 0 || canvasHistory[currentHistoryIndex-1] === bgurl) return;
+    if (currentHistoryIndex === 0 && canvasHistory[currentHistoryIndex-1] === bgurl){
+        return;
+    } 
     currentHistoryIndex--;
     if (canvasHistory[currentHistoryIndex]===bgurl){
          console.log("bgurl")
