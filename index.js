@@ -276,6 +276,41 @@ const imgAdded = (e)=>{
     reader.readAsDataURL(file)
     saveCanvasState()
 }
+const videoAdded = (e) => {
+    const inputElem = document.getElementById("myVideo");
+    const file = inputElem.files[0];
+
+    const videoURL = URL.createObjectURL(file);
+
+    fabric.Video.fromURL(videoURL, (video) => {
+        // Calculate the scale to fit the video to the canvas size
+        let scale = Math.min(
+            canvas.width / video.width,
+            canvas.height / video.height
+        );
+
+        video.set({
+            scaleX: scale,
+            scaleY: scale,
+            top: 0,
+            left: 0,
+            controls: true, // Show video controls (play, pause, etc.)
+        });
+
+        canvas.centerObject(video);
+        canvas.add(video);
+        canvas.renderAll();
+
+        // Ensure the video is playable
+        video.play();
+    });
+
+    saveCanvasState();
+};
+
+// Add an event listener for video input changes
+const inputVideo = document.getElementById("myVideo");
+inputVideo.addEventListener("change", videoAdded);
 
 const canvas = initiCanvas("canvas");
 const svgState={}
