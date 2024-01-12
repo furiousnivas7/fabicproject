@@ -280,32 +280,22 @@ const videoAdded = (e) => {
     const inputElem = document.getElementById("myVideo");
     const file = inputElem.files[0];
 
-    const videoURL = URL.createObjectURL(file);
+    if (file) {
+        const videoURL = URL.createObjectURL(file);
 
-    fabric.Video.fromURL(videoURL, (video) => {
-        // Calculate the scale to fit the video to the canvas size
-        let scale = Math.min(
-            canvas.width / video.width,
-            canvas.height / video.height
-        );
-
-        video.set({
-            scaleX: scale,
-            scaleY: scale,
-            top: 0,
-            left: 0,
-            controls: true, // Show video controls (play, pause, etc.)
-        });
-
-        canvas.centerObject(video);
-        canvas.add(video);
-        canvas.renderAll();
+        const video = document.createElement("video");
+        video.src = videoURL;
+        video.controls = true;
 
         // Ensure the video is playable
         video.play();
-    });
 
-    saveCanvasState();
+        // Append the video element to the canvas container
+        const canvasContainer = document.getElementById("canvas");
+        canvasContainer.appendChild(video);
+
+        saveCanvasState();
+    }
 };
 
 // Add an event listener for video input changes

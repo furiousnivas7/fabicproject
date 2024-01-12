@@ -20,7 +20,10 @@
         <button onclick="undoCanvasAction()">undo</button>
         <button onclick="redoCanvasAction()">redo</button>
     </div>
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas">
+    </canvas>
+    <video id="myVideo" controls style="display:flex; width: auto;"></video>
+
     <div id="buttomButtons">
         <div class="buttonsWrapper">
             <p class="buttonsTitle">Object</p>
@@ -29,6 +32,7 @@
                 <button onclick="createCirc(canvas)">Circ</button>
                 
             </div>
+            
             <button onclick="groupObjects(canvas,group,true)">group</button>
                 <button onclick="groupObjects(canvas,group,false)"> ungroup </button>
                 
