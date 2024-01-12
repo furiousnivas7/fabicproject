@@ -309,8 +309,7 @@ const videoAdded = (e) => {
 };
 
 // Add an event listener for video input changes
-const inputVideo = document.getElementById("myVideo");
-inputVideo.addEventListener("change", videoAdded);
+
 
 const canvas = initiCanvas("canvas");
 const svgState={}
@@ -345,3 +344,6 @@ reader.addEventListener("load",() =>{
 canvas.on('object:modified', function() {
     saveCanvasState();
 });
+
+const inputVideo = document.getElementById("myVideo");
+inputVideo.addEventListener("change", videoAdded);
